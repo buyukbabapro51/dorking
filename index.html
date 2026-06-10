@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML DORKING AUTOMATE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0a0a;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            border-bottom: 2px solid #00ff00;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .ascii {
+            text-align: center;
+            font-size: 10px;
+            margin-bottom: 20px;
+            color: #00aa33;
+        }
+        .card {
+            background: #0f0f0f;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            border-left: 3px solid #00ff00;
+            padding-left: 12px;
+            margin-bottom: 15px;
+        }
+        input {
+            background: #0a0a0a;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 12px;
+            width: 100%;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #0a0a0a;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #00ff00;
+            color: #0a0a0a;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .result-card {
+            background: #0a0a0a;
+            border: 1px solid #00aa33;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 11px;
+            overflow-x: auto;
+        }
+        .result-card a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        .result-card a:hover {
+            text-decoration: underline;
+        }
+        .status {
+            color: #ffff00;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #1a3a1a;
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        th, td {
+            border: 1px solid #00ff00;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #1a1a1a;
+        }
+        .tab {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #00ff00;
+        }
+        .tab-btn {
+            background: #0a0a0a;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #00ff00;
+            color: #0a0a0a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔍 HTML DORKING AUTOMATE</h1>
+    </div>
+    <div class="ascii">
+╔══════════════════════════════════════════════════════════════╗<br>
+║     GOOGLE DORKING - SENSITIVE FILE SCANNER v2.0            ║<br>
+║     Bul: .env, .sql, .log, .json, api key, password        ║<br>
+╚══════════════════════════════════════════════════════════════╝
+    </div>
+
+    <div class="tab">
+        <button class="tab-btn active" data-tab="dork">🎯 DORK</button>
+        <button class="tab-btn" data-tab="domain">🌐 DOMAIN SCAN</button>
+        <button class="tab-btn" data-tab="results">📁 RESULTS</button>
+    </div>
+
+    <!-- DORK TAB -->
+    <div id="dork" class="tab-content active">
+        <div class="card">
+            <h3>🎯 GOOGLE DORK SORGUSU</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Domain:</label>
+                    <input type="text" id="domain" placeholder="ornek.com" value="">
+                    <label>Dork Tipi:</label>
+                    <select id="dorkType" style="background:#0a0a0a;border:1px solid #0f0;color:#0f0;padding:10px;width:100%;font-family:monospace">
+                        <option value="site:">Tüm site (site:domain.com)</option>
+                        <option value="filetype:env">Dosya: .env (filetype:env)</option>
+                        <option value="filetype:sql">Dosya: .sql (filetype:sql)</option>
+                        <option value="filetype:log">Dosya: .log (filetype:log)</option>
+                        <option value="filetype:json">Dosya: .json (filetype:json)</option>
+                        <option value="filetype:txt">Dosya: .txt (filetype:txt)</option>
+                        <option value="inurl:api">URL: api (inurl:api)</option>
+                        <option value="inurl:admin">URL: admin (inurl:admin)</option>
+                        <option value="intitle:index.of">Dizin Listeleme (intitle:index.of)</option>
+                        <option value="password">Şifre (password)</option>
+                        <option value="api_key">API Key (api_key)</option>
+                        <option value="secret_key">Secret Key (secret_key)</option>
+                        <option value="wp-config">WordPress Config (wp-config)</option>
+                    </select>
+                    <button onclick="search()" style="margin-top:10px;width:100%">🔍 DORK ARA</button>
+                    <div id="searchStatus" class="status"></div>
+                </div>
+                <div>
+                    <p><strong>📌 NEDİR?</strong><br>
+                    Google Dorking, Google'ın gelişmiş arama operatörleriyle<br>
+                    sitelerdeki hassas dosyaları, dizin listelerini,<br>
+                    config dosyalarını, şifreleri ve API anahtarlarını bulma yöntemidir.<br><br>
+                    <strong>⚠️ NOT:</strong> Bu araç sadece eğitim amaçlıdır.<br>
+                    İzin alınmadan kullanmayınız.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOMAIN SCAN TAB -->
+    <div id="domain" class="tab-content">
+        <div class="card">
+            <h3>🌐 DOMAIN BAZLI TARAMA</h3>
+            <label>Hedef Domain:</label>
+            <input type="text" id="targetDomain" placeholder="ornek.com">
+            <button onclick="scanDomain()" style="width:100%">🔍 TARA</button>
+            <div id="scanStatus" class="status"></div>
+        </div>
+    </div>
+
+    <!-- RESULTS TAB -->
+    <div id="results" class="tab-content">
+        <div class="card">
+            <h3>📁 BULUNAN SONUÇLAR</h3>
+            <div style="margin-bottom:10px">
+                <button onclick="clearResults()" style="margin-right:10px">🗑️ TEMİZLE</button>
+                <button onclick="exportResults()">📤 DIŞA AKTAR (JSON)</button>
+            </div>
+            <div id="resultsList"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span class="blink">●</span> HTML DORKING AUTOMATE | LOCALHOST:3000
+    </div>
+</div>
+
+<script>
+let results = [];
+
+// Tab functionality
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        if (btn.dataset.tab === 'results') displayResults();
+    });
+});
+
+// Google Dorking search (Google Custom Search API gerekir)
+async function search() {
+    const domain = document.getElementById('domain').value;
+    const dorkType = document.getElementById('dorkType').value;
+    
+    if (!domain) {
+        document.getElementById('searchStatus').innerHTML = '❌ Lütfen domain girin!';
+        return;
+    }
+    
+    let query = '';
+    if (dorkType === 'site:') query = `site:${domain}`;
+    else query = `${dorkType} site:${domain}`;
+    
+    document.getElementById('searchStatus').innerHTML = `⏳ Arama yapılıyor: ${query}`;
+    
+    // Google Dork için API kullanmadan direkt link oluştur
+    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    
+    // Sonucu kaydet
+    const result = {
+        id: Date.now(),
+        domain: domain,
+        query: query,
+        url: googleUrl,
+        timestamp: new Date().toLocaleString()
+    };
+    results.unshift(result);
+    displayResults();
+    
+    document.getElementById('searchStatus').innerHTML = `✅ Sonuç kaydedildi! <a href="${googleUrl}" target="_blank" style="color:#0f0">Google'da Aç →</a>`;
+}
+
+// Domain scan
+async function scanDomain() {
+    const domain = document.getElementById('targetDomain').value;
+    if (!domain) {
+        document.getElementById('scanStatus').innerHTML = '❌ Lütfen domain girin!';
+        return;
+    }
+    
+    document.getElementById('scanStatus').innerHTML = '⏳ Tarama başlatılıyor...';
+    
+    // En yaygın dorkları tarat
+    const dorks = [
+        `site:${domain}`,
+        `site:${domain} filetype:env`,
+        `site:${domain} filetype:sql`,
+        `site:${domain} filetype:log`,
+        `site:${domain} filetype:json`,
+        `site:${domain} inurl:api`,
+        `site:${domain} inurl:admin`,
+        `site:${domain} intitle:index.of`,
+        `site:${domain} password`,
+        `site:${domain} api_key`,
+        `site:${domain} secret_key`,
+        `site:${domain} wp-config`,
+        `site:${domain} .git/config`,
+        `site:${domain} .env.production`,
+        `site:${domain} backup.sql`,
+        `site:${domain} .htaccess`
+    ];
+    
+    for (const dork of dorks) {
+        const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+        const result = {
+            id: Date.now() + Math.random(),
+            domain: domain,
+            query: dork,
+            url: googleUrl,
+            timestamp: new Date().toLocaleString()
+        };
+        results.unshift(result);
+        await sleep(500);
+    }
+    
+    displayResults();
+    document.getElementById('scanStatus').innerHTML = `✅ Tarama tamamlandı! ${dorks.length} dork kaydedildi.`;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function displayResults() {
+    const container = document.getElementById('resultsList');
+    if (results.length === 0) {
+        container.innerHTML = '<div class="status">Henüz sonuç yok. Önce arama yapın.</div>';
+        return;
+    }
+    
+    let html = `
+        <table>
+            <thead>
+                <tr><th>Tarih</th><th>Domain</th><th>Dork Sorgusu</th><th>Link</th></tr>
+            </thead>
+            <tbody>
+    `;
+    
+    results.forEach(r => {
+        html += `
+            <tr>
+                <td>${r.timestamp}</td>
+                <td>${r.domain}</td>
+                <td style="font-size:10px">${r.query}</td>
+                <td><a href="${r.url}" target="_blank">🔗 Google</a></td>
+            </tr>
+        `;
+    });
+    
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+}
+
+function clearResults() {
+    results = [];
+    displayResults();
+}
+
+function exportResults() {
+    const dataStr = JSON.stringify(results, null, 2);
+    const blob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dork_results_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
+</body>
+                          </html>
